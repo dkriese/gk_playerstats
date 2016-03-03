@@ -1,0 +1,87 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+body {
+	background-image: url('../img/HHqnX5J.png');
+	background-color: #cccccc;
+}
+
+
+.logo {
+/*	background : url('../img/xlBBDAG.png') no-repeat 0 0; */
+	position: absolute;
+    top: 80px;
+    left: 0;
+    width: 427px;
+    height: 85px;
+    border: none;
+	z-index: 99;
+}
+
+#wrapper {
+	margin: 25px auto; /* 50px from the top and auto centered */
+}
+
+#modal-background {
+        display: none;
+        position: fixed;
+        top: 100px;
+        left: 0;
+        width: 75%;
+        height: 100%;
+       /* background-color: white;
+        opacity: .50;
+        -webkit-opacity: .5;
+        -moz-opacity: .5;
+        filter: alpha(opacity=50); */
+        z-index: 1000;
+    }
+    
+    #modal-content {
+        background-color: white;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        box-shadow: 0 0 20px 0 #222;
+        -webkit-box-shadow: 0 0 20px 0 #222;
+        -moz-box-shadow: 0 0 20px 0 #222;
+        display: none;
+        height: auto;
+        left: 50%;
+        margin: 100px 0 0 -160px;
+        padding: 10px;
+        position: absolute;
+        top: 50%;
+        width: 300px;
+		opacity: 0.9;
+		filter: alpha(opacity=40); /* For IE8 and earlier */
+        z-index: 1000;
+    }
+
+    #modal-background.active, #modal-content.active {
+        display: block;
+    }
+	.player-stats-title {
+		position: absolute;
+		left: 40%;
+		top: 100px;
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
