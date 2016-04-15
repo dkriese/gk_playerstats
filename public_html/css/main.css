@@ -5,8 +5,8 @@
    ========================================================================== */
 
 body {
-	background-image: url('../img/HHqnX5J.png');
-	background-color: #cccccc;
+/*	background-image: url('../img/HHqnX5J.png'); */
+	background-color: transparent;
 }
 
 
@@ -77,11 +77,32 @@ body {
     margin: 0 auto;
 }
 
+.center {
+    text-align:center;
+}
 
-
-
-
-
-
-
-
+.center form {
+    display:inline-block;
+}
+.center-modal {
+	position: absolute;
+  left: 50%;
+  top: -75px;
+  transform: translate(-50%, -50%);
+  width: 40%;
+}
+.rankAdmin {
+	color:red;
+}
+.rankArchitect {
+	color: lightgreen;
+}
+.rankModerator {
+	color: gold;
+}
+.rankOwner {
+	color: darkblue;
+}
+.rankVIP {
+	color: aqua;
+}

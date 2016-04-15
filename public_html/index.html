@@ -58,15 +58,13 @@
 				//var response = '';
 				$(function () {
 					$("form#nameForm").on("submit", function (e) {
-						//	$('#modal-player-stats').on('click', function (e) {
+
 						e.preventDefault();
 						$('#modal-player-stats').fadeOut(300);
-//var mydata = $("form#nameForm").serialize();
+
 						var uname = $("#username").val();
 						var exclude_arr = ['id', 'arrows_fired'];
 
-						console.log('username is ' + uname);
-						//  console.log(mydata); // it's only for test
 						$.ajax({
 							type: "POST",
 							dataType: "json",
@@ -75,45 +73,52 @@
 							data: {username: uname},
 							success: function (data, status)
 							{
-								// console.log('data is ' + JSON.stringify(data,null,4));
-								// console.log('status is ' + status);
 								if (data.length == 0) {
-									$('#player-not-found').show();
+									$('#player-not-found').show().fadeTo(2000, 500).slideUp(500, function () {
+										//$("#player-not-found").alert('close');
+									});
 								} else {
 									$('#player-not-found').hide();
-									//alert(JSON.stringify(data,null,4));
 									$("#modal-content,#modal-background").toggleClass("active");
-									var stats_html = '<table class="table-striped" style="width:100%">';
-								//	$("#modal-header-image").remove();
-									$("#modal-header-image").each(function() {
-									if ($(this).find('img').length) {
-										$("#modal-header-image img:last-child").remove();
-									}
+									var stats_html = '<table class="table-striped table-hover" style="width:100%">';
+
+									$("#modal-header-image").each(function () {
+										if ($(this).find('img').length) {
+											$("#modal-header-image img:last-child").remove();
+										}
 									});
-									$("#modal-header-image").prepend('<img id="theImg" class="theImg" src="https://minotar.net/helm/'+data[0].username+'/100.png' + '" />');
+									$("#modal-header-image").prepend('<img id="theImg" class="theImg" src="https://mc-heads.net/body/'
+											+ data[0].name + '/70.png' + '" />');
 									$.each(data, function (i, item) {
 										$.each(item, function (key, val) {
-											if ($.inArray(key,exclude_arr) != -1) {
+											if ($.inArray(key, exclude_arr) != -1) {
 												return;
 											} else {
-												stats_html += '<tr class="text-center"><td class="text-right" style="padding:5px;"> ' + 
-														toTitleCase(key) + 
-														'</td><td style="padding:5px; font-weight:bold">' + 
+												if (key == 'time_ingame') {
+													val = toDaysHoursMinutes(val);
+												}
+
+												stats_html += '<tr class="text-center"><td class="text-right" style="padding:5px;"> ' +
+														toTitleCase(key) +
+														'</td><td id=stat' + key + ' style="padding:5px; font-weight:bold">' +
 														val + '</td></tr>';
+
 											}
-												
+
 										});
 									});
 									stats_html += '</table>',
-									$('#modal-stats-content').html(stats_html);
-									//console.log(response);
-									//alert('data is ' + JSON.stringify(data,null,4));
-									//alert('textStatus is ' + JSON.stringify(textStatus,null,4));
+											$('#modal-stats-content').html(stats_html);
+
+									var rankType = $("#statrank").html();
+
+									$("#statrank").addClass('rank' + rankType);
+									if (rankType != 'Default')
+										$("#statrank").html('[' + rankType + ']');
 								}
 							},
 							error: function (jqXHR, textStatus, errorThrown)
 							{
-								
 								console.log('error: ' + textStatus + ' ' + errorThrown);
 							}
 						}); // end ajax call
@@ -121,11 +126,30 @@
 					});
 				});
 				function toTitleCase(str) {
-					str = str.replace(/_/g,' ');
-					return str.replace(/(?:^|\s)\w/g, function(match) {
+					str = str.replace(/_/g, ' ');
+					return str.replace(/(?:^|\s)\w/g, function (match) {
 						return match.toUpperCase();
 					});
-				}
+				};
+
+				function toDaysHoursMinutes(secs) {
+					var calcResult = '';
+					var seconds = secs;
+					var minutes = Math.floor(seconds / 60);
+					var hours = Math.floor(minutes / 60);
+					var days = Math.floor(hours / 24);
+
+					hours = hours - (days * 24);
+					minutes = minutes - (days * 24 * 60) - (hours * 60);
+					seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+
+					calcResult = days ? days + 'd ' : '';
+					calcResult += hours ? hours + 'h ' : '';
+					calcResult += minutes ? minutes + 'm ' : '';
+					calcResult += seconds + 's';
+
+					return calcResult;
+				};
 
 			});
 		</script>
@@ -135,51 +159,59 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-		
+
 
 		<div class="container">
 			<div id="wrapper">
-			<!-- Example row of columns -->
-			<div class="row player-stats-title">Player Stats</div>
-			<div class="alert alert-warning" id="player-not-found" hidden>
-				<strong>Player not found - please try again</strong>
-			</div>
-			<div class="row">
-				<div class="col-md-12 col-centered">
-					<div id="modal-background" role="dialog">
-						<div class="modal-dialog">
-							<div id="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									<div class="modal-title" id="modal-header-image"></div>
+				<!-- Example row of columns -->
+				<!--	<div class="row player-stats-title">Player Stats</div> -->
+				<div class="alert alert-warning" id="player-not-found" hidden>
+					<strong>Alert</strong> Player not found.
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div id="modal-background" class="center" role="dialog">
+							<div class="modal-dialog center-modal">
+								<div id="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<div class="modal-title" id="modal-header-image"></div>
+									</div>
+									<div id="modal-stats-content">
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn" data-dismiss="modal">Close</button>
+									</div>
 								</div>
-								<div id="modal-stats-content">
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-						</div> <!-- modal-dialog -->
+							</div> <!-- modal-dialog -->
+						</div>
 					</div>
 				</div>
-			</div>
-			<hr><br /><br /><br /><br />
-			<div class="row">
+				<div class="row">
 
-				<form class="form-inline" id="nameForm" method ="post">
-					<div class="form-group">
-						<!-- <label for="username">Find a Player</label> -->
-						<input type="text" class="form-control" id="username" placeholder="Find a Player" style="width:150px" required>
-					</div><br />
-					<button type="submit" class="btn btn-primary" name="btnSubmit" id="btnSubmit"> View Stats </button>
-				</form>
-			
-			</div>
+					<form class="form-inline center" id="nameForm" method ="post">
+						<div class="form-group">
+							<!-- <label for="username">Find a Player</label> -->
+							<div class="col-md-4">
+
+								<input type="text" class="form-control" id="username" placeholder="Find a Player" style="width:150px" required>
+							</div>
+						</div>
+
+						<!-- Button -->
+						<div class="form-group">
+							<div class="col-md-4">
+								<button type="submit" class="btn btn-primary" name="btnSubmit" id="btnSubmit"> View Stats </button>
+								</form>
+
+							</div>
+						</div>
+				</div>
 			</div> <!-- end wrapper -->
 			<!-- <footer>
 				<p>&copy; Company 2015</p>
 			</footer> -->
-		</div> <!-- /container -->        
+		</div> <!-- /container -->
 		<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
 		<script src="js/vendor/bootstrap.min.js"></script>
@@ -203,5 +235,5 @@
 			ga('create', 'UA-XXXXX-X', 'auto');
 			ga('send', 'pageview');
 		</script>
-    </body>
+	</body>
 </html>
