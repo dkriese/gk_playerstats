@@ -74,8 +74,10 @@
 							success: function (data, status)
 							{
 								if (data.length == 0) {
-									$('#player-not-found').show().fadeTo(2000, 500).slideUp(500, function () {
-										//$("#player-not-found").alert('close');
+									$('#player-not-found').slideDown(500, function () {
+									});
+									$('#player-not-found').fadeTo(2000, 500).slideUp(500, function () {
+										$("#player-not-found").hide();
 									});
 								} else {
 									$('#player-not-found').hide();
@@ -166,7 +168,8 @@
 				<!-- Example row of columns -->
 				<!--	<div class="row player-stats-title">Player Stats</div> -->
 				<div class="alert alert-warning" id="player-not-found" hidden>
-					<strong>Alert</strong> Player not found.
+					<span class="glyphicon glyphicon-alert"></span>
+					Player not found.
 				</div>
 				<div class="row">
 					<div class="col-md-12">
@@ -201,7 +204,9 @@
 						<!-- Button -->
 						<div class="form-group">
 							<div class="col-md-4">
-								<button type="submit" class="btn btn-primary" name="btnSubmit" id="btnSubmit"> View Stats </button>
+								<button type="submit" class="btn" name="btnSubmit" id="btnSubmit"> 
+								<span class="glyphicon glyphicon-search"> </span> Find
+								</button>
 								</form>
 
 							</div>
